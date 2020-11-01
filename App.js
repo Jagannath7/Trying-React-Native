@@ -1,21 +1,37 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import { useState } from 'react';
+import { StyleSheet, Text, View, SafeAreaView, TextInput, Button, ScrollView } from 'react-native';
+import Todo from './components/Todo'
 
 export default function App() {
+
+  const [input, setInput] = useState('')
+  const [todos, setTodos] = useState([])
+
+  const addTodo = () => {
+    setTodos([...todos, input])
+    setInput('')
+  }
+
   return (
     <SafeAreaView style={styles.container}>
-      <Text>Starting an Awesome Project with React Native.</Text>
-      <View style={styles.small}>
-        <Text>Small</Text>
+      <View>
+        <Text>To-Do</Text>
       </View>
-      <View style={styles.medium}>
-        <Text>Medium</Text>
-      </View>
-      <View style={styles.large}>
-        <Text>Large</Text>
-      </View>
-      <StatusBar style="auto" />
+        <ScrollView>
+          {todos.map(todo => (
+            <Todo title={todo}/>
+          ))}
+        </ScrollView>
+       
+      <TextInput 
+        style={styles.todoInput}
+        value={input}
+        onChangeText={text=>{setInput(text)}}
+      />
+      <Button onPress={addTodo} title='Add Todo'/>
+     
     </SafeAreaView>
   );
 }
@@ -27,19 +43,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  small: {
-    width: 50,
-    height: 50,
-    backgroundColor: 'powderblue'
-  },
-  medium: {
-    width: 100,
-    height: 100,
-    backgroundColor: 'skyblue'
-  },
-  large: {
-    width: 150,
-    height: 150,
-    backgroundColor: 'steelblue'
+  todoInput: {
+    height: 40,
+    borderColor: 'skyblue',
+    borderWidth: 1,
+    margin:20
   }
 });
